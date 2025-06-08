@@ -1,0 +1,4 @@
+# _redirects file
+/listing/:item_id /index.html 200
+/listing/:item_name-:item_id /index.html 200
+/messages/conversation/:conversation_id /index.html 200

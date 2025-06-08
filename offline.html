@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Cleveland Marketplace</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007bff">
+</head>
+<body>
+    <header>
+        <h1>Cleveland Marketplace</h1>
+    </header>
+    <main style="text-align: center; padding-top: 50px;">
+        <h2>You are Offline</h2>
+        <p>It looks like you're not connected to the internet. Some features may be limited.</p>
+        <p>Please check your connection and try again.</p>
+        <p><a href="/" class="button-primary" style="text-decoration: none;">Try Again</a></p>
+    </main>
+    <footer>
+         <p>© <span id="currentYearOffline"></span> Cleveland Marketplace.</p>
+    </footer>
+    <script>
+        if (document.getElementById('currentYearOffline')) {
+            document.getElementById('currentYearOffline').textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>

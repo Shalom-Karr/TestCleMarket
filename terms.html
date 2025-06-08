@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Cleveland Marketplace</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#007bff">
+    <meta name="description" content="Read the Terms of Service for Cleveland Marketplace.">
+</head>
+<body>
+    <header>
+        <div id="authContainer">
+            <span id="userEmailDisplayHeader" class="header-email-display" style="display:none;"></span>
+            
+            <button id="loginBtn" class="auth-button" style="display:none;">Login</button>
+            <button id="signupBtn" class="auth-button" style="display:none;">Signup</button>
+            
+            <button id="messagesHeaderBtn" class="auth-button button-messages-icon" style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span>Messages</span>
+                <span id="unreadMessagesBadge" class="unread-badge" style="display:none;"></span>
+            </button>
+            
+            <button id="editProfileBtn" class="auth-button button-profile" style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>My Account</span>
+            </button>
+
+            <button id="logoutBtnHeader" class="auth-button button-danger" style="display:none;">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Logout</span>
+            </button>
+            
+            <a href="admin/index.html" id="adminDashboardBtn" class="auth-button button-special" style="display:none;">Admin Dashboard</a>
+        </div>
+        <div class="header-main-content">
+            <h1>Cleveland Marketplace</h1>
+            <h2>Terms of Service</h2>
+        </div>
+    </header>
+
+    <main style="max-width: 800px; margin: 30px auto; padding: 20px;">
+        <p><a href="index.html" class="button-outline">← Back to Home</a></p>
+        
+        <h3 style="margin-top: 30px;">1. Acceptance of Terms</h3>
+        <p>By accessing or using the Cleveland Marketplace website and its services ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of the terms, then you may not access the Service.</p>
+
+        <h3>2. Use of Service</h3>
+        <p>The Service is an online marketplace for users to buy and sell new and used items. You agree to use the Service only for lawful purposes and in a way that does not infringe the rights of, restrict, or inhibit anyone else's use and enjoyment of the Service. Prohibited behavior includes harassing or causing distress or inconvenience to any other user, transmitting obscene or offensive content, or disrupting the normal flow of dialogue within the Service.</p>
+
+        <h3>3. User Accounts</h3>
+        <p>When you create an account with us, you guarantee that you are above the age of 18, and that the information you provide us is accurate, complete, and current at all times. You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password. You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
+
+        <h3>4. Listings and Transactions</h3>
+        <p>Users are responsible for the accuracy and legality of items listed for sale. Cleveland Marketplace is not involved in the actual transaction between buyers and sellers. We do not inspect items, handle payments, or guarantee the quality or legality of items listed. All transactions are at the sole risk of the buyer and seller.</p>
+
+        <h3>5. Content</h3>
+        <p>Our Service allows you to post content, including item listings, comments, and messages. You are responsible for the content that you post on the Service, including its legality, reliability, and appropriateness. You grant us the right and license to use, modify, publicly perform, publicly display, reproduce, and distribute such content on and through the Service.</p>
+
+        <h3>6. Termination</h3>
+        <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+
+        <h3>7. Governing Law</h3>
+        <p>These Terms shall be governed and construed in accordance with the laws of Cleveland, Ohio, United States, without regard to its conflict of law provisions.</p>
+
+        <h3>8. Changes to Terms</h3>
+        <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
+
+        <h3>9. Contact Us</h3>
+        <p>If you have any questions about these Terms, please contact us via the support chat feature on the main page.</p>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© <span id="currentYearTerms"></span> Cleveland Marketplace. All Rights Reserved.</p>
+            <p>
+                <a href="terms.html">Terms of Service</a> |
+                <a href="privacy.html">Privacy Policy</a>
+            </p>
+        </div>
+    </footer>
+
+    <button id="supportChatBtn" title="Chat with Support" style="display:none;">?</button>
+
+    <!-- Modals (included on all pages for consistency) -->
+    <div id="postItemModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Post Your Item</h2> <form id="postItemForm"> <div> <label for="post_itemName">Item Name:</label> <input type="text" id="post_itemName" name="itemName" required> </div> <div> <label for="post_itemDescription">Description:</label> <textarea id="post_itemDescription" name="itemDescription" required></textarea> </div> <div class="price-section"> <label for="postItemPriceField">Price:</label> <div class="price-input-wrapper"> <span class="dollar-sign">$</span> <input type="number" id="postItemPriceField" name="postItemPriceField" step="0.01" min="0" placeholder="0.00" required> </div> <div class="free-option-container"> <input type="checkbox" id="postItemFreeCheckbox" name="postItemFreeCheckbox"> <label for="postItemFreeCheckbox" class="checkbox-label">Mark as Free</label> </div> </div> <div> <label>Image:</label> <div class="image-source-options"> <input type="radio" id="postImageSourceFile" name="postImageSource" value="file" checked> <label for="postImageSourceFile">Upload File</label> <input type="radio" id="postImageSourceUrl" name="postImageSource" value="url"> <label for="postImageSourceUrl">Use Image URL</label> </div> </div> <div id="postImageFileUploadContainer"> <label for="post_itemImageFile">Image File:</label> <input type="file" id="post_itemImageFile" name="itemImageFile" accept="image/*"> <img id="postItemImagePreview" src="#" alt="Image Preview" style="display:none;"/> </div> <div id="postItemImageUrlContainer" style="display: none;"> <label for="post_itemImageUrlField">Image URL:</label> <input type="url" id="post_itemImageUrlField" name="itemImageUrlField" placeholder="https://example.com/image.png"> </div> <div> <label for="post_itemContact">Contact Info:</label> <input type="text" id="post_itemContact" name="itemContact" required placeholder="Email or Phone"> </div> <button type="submit" class="button-primary"> <span class="button-text">Post Item</span> <span class="button-spinner" style="display: none;"></span> </button> </form> <div class="modal-processing-overlay" style="display: none;"> <div class="spinner-large"></div> <p>Processing...</p> </div> </div> </div>
+    <div id="editItemModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Edit Item</h2> <form id="editItemForm"> <input type="hidden" id="editItemId"> <input type="hidden" id="editItemOwnerId"> <input type="hidden" id="editItemOriginalImageUrl"> <div><label for="edit_itemName">Item Name:</label><input type="text" id="edit_itemName" name="editItemName" required></div> <div><label for="edit_itemDescription">Description:</label><textarea id="edit_itemDescription" name="editItemDescription" required></textarea></div> <div class="price-section"> <label for="editItemPriceField">Price:</label> <div class="price-input-wrapper"> <span class="dollar-sign">$</span> <input type="number" id="editItemPriceField" name="editItemPriceField" step="0.01" min="0" placeholder="0.00" required> </div> <div class="free-option-container"> <input type="checkbox" id="editItemFreeCheckbox" name="editItemFreeCheckbox"> <label for="editItemFreeCheckbox" class="checkbox-label">Mark as Free</label> </div> </div> <div><label for="edit_itemContact">Contact Info:</label><input type="text" id="edit_itemContact" name="editItemContact" required placeholder="Email or Phone"></div> <div class="current-image-preview"> <p>Current Image:</p> <img id="editItemCurrentImage" src="" alt="Current Item Image" style="display:none;"> </div> <hr style="margin: 20px 0;"> <div> <label>Change Image (Optional):</label> <div class="image-source-options"> <input type="radio" id="editImageSourceNone" name="editImageSource" value="none" checked> <label for="editImageSourceNone">Keep Current</label> <input type="radio" id="editImageSourceFile_Edit" name="editImageSource" value="file"> <label for="editImageSourceFile_Edit">Upload New File</label> <input type="radio" id="editImageSourceUrl_Edit" name="editImageSource" value="url"> <label for="editImageSourceUrl_Edit">Use New URL</label> </div> </div> <div id="editImageFileUploadContainer_Edit" style="display: none;"> <label for="edit_newImageFile">New Image File:</label> <input type="file" id="edit_newImageFile" name="newImageFile" accept="image/*"> <img id="editItemNewImagePreview" src="#" alt="New Image Preview" style="display:none;"/> </div> <div id="editItemImageUrlContainer_Edit" style="display: none;"> <label for="edit_newImageUrlField">New Image URL:</label> <input type="url" id="edit_newImageUrlField" name="newImageUrlField" placeholder="https://example.com/image.png"> </div> <button type="submit" class="button-primary"> <span class="button-text">Save Changes</span> <span class="button-spinner" style="display: none;"></span> </button> </form> <div class="modal-processing-overlay" style="display: none;"> <div class="spinner-large"></div> <p>Processing...</p> </div> </div> </div>
+    <div id="signupModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Create Account</h2> <form id="signupForm"> <div> <label for="signupDisplayName">Display Name (optional):</label> <input type="text" id="signupDisplayName" name="signupDisplayName" placeholder="e.g., ClevelandRocks123"> </div> <div><label for="signupEmail">Email:</label><input type="email" id="signupEmail" name="signupEmail" required></div> <div class="password-toggle-container"> <label for="signupPassword">Password (min 6 chars):</label><input type="password" id="signupPassword" name="signupPassword" required minlength="6"> <button type="button" class="password-toggle-btn" title="Show Password"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> </button> </div> <div> <label for="signupPhoneNumber">Phone Number:</label> <input type="tel" id="signupPhoneNumber" name="signupPhoneNumber" placeholder="e.g., 216-555-1234" required> </div> <div class="cf-turnstile" id="signup-turnstile-widget" data-sitekey="0x4AAAAAABeY1KpLewbnc27k" style="margin: 15px auto;"></div> <button type="submit" class="button-primary">Sign Up</button> <p id="signupMessage" class="form-message"></p> <p class="auth-switch-link">Already have an account? <a href="#" id="switchToLoginLink">Login here</a>.</p> </form> </div> </div>
+    <div id="loginModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Login</h2> <form id="loginForm"> <div><label for="loginEmail">Email:</label><input type="email" id="loginEmail" name="loginEmail" required></div> <div class="password-toggle-container"> <label for="loginPassword">Password:</label><input type="password" id="loginPassword" name="loginPassword" required> <button type="button" class="password-toggle-btn" title="Show Password"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> </button> </div> <div class="cf-turnstile" id="login-turnstile-widget" data-sitekey="0x4AAAAAABeY1KpLewbnc27k" style="margin: 15px auto;"></div> <button type="submit" class="button-primary">Login</button> <p id="loginMessage" class="form-message"></p> <p class="auth-switch-link" style="margin-top: 10px;"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p> </form> </div> </div>
+    <div id="editProfileModal" class="modal"> <div class="modal-content profile-modal-content"> <span class="close-button">×</span> <div class="profile-header"> <h2 id="profileModalTitle">My Account</h2> <p id="profileModalUserEmail" class="profile-user-identifier">user@example.com</p> </div> <div class="profile-section"> <h3>Profile Details</h3> <form id="editProfileForm"> <div> <label for="profileUsername">Display Name:</label> <input type="text" id="profileUsername" name="profileUsername" placeholder="e.g., ClevelandSeller123"> </div> <div style="margin-top: 5px;"> <label for="profilePhoneNumber">Phone Number:</label> <input type="tel" id="profilePhoneNumber" name="profilePhoneNumber" placeholder="Not provided"> </div> <div style="margin-top: 5px;"> <label for="profileEmail">Email:</label> <input type="email" id="profileEmail" name="profileEmail" readonly disabled> </div> <button type="submit" class="button-primary profile-action-button"> <span class="button-text">Save</span> <span class="button-spinner" style="display: none;"></span> </button> </form> </div> <div class="profile-section"> <h3>Actions</h3> <button id="viewMyMessagesFromProfileBtn" class="button-outline profile-action-button">View My Messages</button> <button id="logoutFromProfileBtn" class="button-danger profile-action-button">Logout</button> </div> <div class="modal-processing-overlay" style="display: none;"> <div class="spinner-large"></div> <p>Processing...</p> </div> </div> </div>
+    <div id="selectUserToMessageModal" class="modal"> <div class="modal-content"> <span class="close-button" id="closeSelectUserToMessageModalBtn">×</span> <h2>Start a New Conversation</h2> <p>Search for a user to message by their display name or email.</p> <input type="text" id="selectUserToMessageSearch" placeholder="Search users..." class="modal-search-bar"> <div id="selectUserToMessageList" class="user-select-list-container"> <p class="loading-text">Start typing to search for users...</p> </div> </div> </div>
+    <div id="twoFactorAuthModal" class="modal"> <div class="modal-content"> <span class="close-button" id="closeTwoFactorAuthModalBtn">×</span> <h2>Two-Factor Verification</h2> <form id="twoFactorAuthForm"> <p id="twoFactorAuthInstruction">A 6-digit verification code has been sent to your email. Please enter it below.</p> <div> <label for="twoFactorAuthCode">Verification Code:</label> <input type="text" id="twoFactorAuthCode" name="twoFactorAuthCode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required> </div> <button type="submit" class="button-primary">Verify Code</button> <p id="twoFactorAuthMessage" class="form-message"></p> </form> </div> </div>
+
+    <div id="toastNotification" class="toast-notification"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        if (document.getElementById('currentYearTerms')) {
+            document.getElementById('currentYearTerms').textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>

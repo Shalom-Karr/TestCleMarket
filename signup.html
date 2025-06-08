@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Cleveland Marketplace</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+    <header>
+        <div class="header-main-content" style="padding-top: 1em;">
+            <h1>Cleveland Marketplace</h1>
+            <h2>Create Your Account</h2>
+        </div>
+    </header>
+
+    <main>
+        <div class="auth-page-container">
+            <div class="auth-form-container">
+                <h2>Join the Community</h2>
+                <form id="signupForm">
+                    <div>
+                        <label for="signupDisplayName">Display Name (optional):</label>
+                        <input type="text" id="signupDisplayName" name="signupDisplayName" placeholder="e.g., ClevelandRocks123">
+                    </div>
+                    <div>
+                        <label for="signupEmail">Email:</label>
+                        <input type="email" id="signupEmail" name="signupEmail" required>
+                    </div>
+                    <div class="password-toggle-container">
+                        <label for="signupPassword">Password (min 6 chars):</label>
+                        <input type="password" id="signupPassword" name="signupPassword" required minlength="6">
+                        <button type="button" class="password-toggle-btn" title="Show Password">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                    <div>
+                        <label for="signupPhoneNumber">Phone Number:</label>
+                        <input type="tel" id="signupPhoneNumber" name="signupPhoneNumber" placeholder="e.g., 216-555-1234" required>
+                    </div>
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAABeY1KpLewbnc27k" style="margin: 15px auto;"></div>
+                    <button type="submit" class="button-primary">Sign Up</button>
+                    <p id="signupMessage" class="form-message"></p>
+                    <p class="auth-switch-link">Already have an account? <a href="login.html">Login here.</a></p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="toastNotification" class="toast-notification"></div>
+
+    <footer style="margin-top: auto;">
+        <div class="footer-content">
+            <p>© <span id="currentYearSignup"></span> Cleveland Marketplace. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        if (document.getElementById('currentYearSignup')) {
+            document.getElementById('currentYearSignup').textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>

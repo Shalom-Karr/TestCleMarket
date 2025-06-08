@@ -1,0 +1,50 @@
+{
+  "name": "Cleveland Marketplace",
+  "short_name": "CleMarket",
+  "description": "Buy and sell items locally in the Cleveland area. Post listings, comment, and message users directly.",
+  "lang": "en",
+  "dir": "auto",
+  "id": "/?v=1.1.0",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#007bff",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Post New Item",
+      "short_name": "Post Item",
+      "description": "Quickly post a new item for sale",
+      "url": "/index.html#post",
+      "icons": [{ "src": "/icons/shortcut-post-96x96.png", "sizes": "96x96", "type": "image/png"}]
+    },
+    {
+      "name": "My Messages",
+      "short_name": "Messages",
+      "description": "View your conversations",
+      "url": "/messages.html",
+      "icons": [{ "src": "/icons/shortcut-messages-96x96.png", "sizes": "96x96", "type": "image/png"}]
+    }
+  ]
+}
