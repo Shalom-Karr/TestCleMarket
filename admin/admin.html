@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Cleveland Marketplace</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#007bff">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TM7DBB515N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TM7DBB515N', { 'send_page_view': false });
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div id="authContainer">
+            <span id="userEmailDisplayHeader" class="header-email-display" style="display:none;"></span>
+            <button id="logoutBtnHeader" class="auth-button button-danger" style="display:none;"><span>Logout</span></button>
+        </div>
+        <div class="header-main-content">
+            <h1>Cleveland Marketplace</h1>
+            <h2>Admin Dashboard</h2>
+        </div>
+    </header>
+    <main>
+        <div class="admin-dashboard-layout">
+            <nav class="admin-sidebar">
+                <h3>Admin Tools</h3>
+                <ul>
+                    <li><a href="admin.html" class="admin-nav-link active-nav-link">Dashboard</a></li>
+                    <li><a href="messages.html" class="admin-nav-link">View All Messages</a></li>
+                    <li><a href="users.html" class="admin-nav-link">User Management</a></li>
+                    <li><a href="../index.html" class="admin-nav-link">← Back to Main Site</a></li>
+                </ul>
+            </nav>
+            <div class="admin-content-area">
+                <h2>Welcome to the Admin Dashboard</h2>
+                <div class="admin-panel-info">
+                    <p>This is the central hub for managing the Cleveland Marketplace. Select an option from the sidebar to begin.</p>
+                    <p>Current Admin User: <span id="currentAdminEmail">Loading...</span></p>
+                </div>
+                <div class="admin-summary-cards">
+                    <div class="summary-card">
+                        <h3>Total Listings</h3>
+                        <p id="totalListingsCount">Loading...</p>
+                        <a href="../index.html" class="button-outline">View Listings</a>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Users</h3>
+                        <p id="totalUsersCount">Loading...</p>
+                        <a href="users.html" class="button-outline">Manage Users</a>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Conversations</h3>
+                        <p id="totalConversationsCount">Loading...</p>
+                        <a href="messages.html" class="button-outline">View Conversations</a>
+                    </div>
+                </div>
+                <div class="admin-activity-log">
+                    <h3>Recent Admin Activity (Placeholder)</h3>
+                    <ul id="adminActivityList">
+                        <li>No recent activity to display. (Requires backend implementation)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="toastNotification" class="toast-notification"></div>
+    <footer>
+        <div class="footer-content">
+            <p>© <span id="currentYearAdmin"></span> Cleveland Marketplace. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        if (document.getElementById('currentYearAdmin')) {
+            document.getElementById('currentYearAdmin').textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Messages - Cleveland Marketplace</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#007bff">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TM7DBB515N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TM7DBB515N', { 'send_page_view': false });
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div id="authContainer">
+            <span id="userEmailDisplayHeader" class="header-email-display" style="display:none;"></span>
+            <button id="logoutBtnHeader" class="auth-button button-danger" style="display:none;"><span>Logout</span></button>
+        </div>
+        <div class="header-main-content">
+            <h1>Cleveland Marketplace</h1>
+            <h2>Admin Panel - All Site Conversations</h2>
+        </div>
+    </header>
+    <main>
+        <div class="admin-dashboard-layout">
+             <nav class="admin-sidebar">
+                <h3>Admin Tools</h3>
+                <ul>
+                    <li><a href="admin.html" class="admin-nav-link">Dashboard</a></li>
+                    <li><a href="messages.html" class="admin-nav-link active-nav-link">View All Messages</a></li>
+                    <li><a href="users.html" class="admin-nav-link">User Management</a></li>
+                    <li><a href="../index.html" class="admin-nav-link">← Back to Main Site</a></li>
+                </ul>
+            </nav>
+            <div class="admin-content-area">
+                <div id="adminMessagesView" style="padding:0; box-shadow:none;">
+                    <h2>All Conversations</h2>
+                    <div class="admin-panel-info">
+                        <p>As an administrator, you can view all conversations and delete individual messages if necessary.</p>
+                    </div>
+                    <div class="messages-layout">
+                        <div id="adminConversationsListPanel">
+                            <h4>All Conversations</h4>
+                            <div id="adminConversationsListInner">
+                                <p class="loading-text">Loading all conversations...</p>
+                            </div>
+                        </div>
+                        <div id="adminMessageChatPanel" style="display:none;">
+                            <h3 id="adminChatWithInfo">Select a conversation to view</h3>
+                            <div id="adminMessagesContainer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="toastNotification" class="toast-notification"></div>
+    <footer>
+        <div class="footer-content">
+            <p>© <span id="currentYearAdminMessages"></span> Cleveland Marketplace. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        if (document.getElementById('currentYearAdminMessages')) {
+            document.getElementById('currentYearAdminMessages').textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>

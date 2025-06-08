@@ -1,0 +1,228 @@
+
+/* admin/style.css - Cleveland Marketplace Admin Styles */
+
+/* This file primarily sets up the admin dashboard layout.
+   It imports the main stylesheet for consistency in modals, buttons, etc. */
+@import url("../style.css");
+
+/* Admin-specific header buttons (these were removed from main style.css and are now admin-only) */
+/* The main style.css now handles `a.button-special` for the admin dashboard link */
+
+/* Admin Dashboard Layout */
+.admin-dashboard-layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 25px auto;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-lg);
+    overflow: hidden; /* To contain rounded corners */
+}
+
+.admin-sidebar {
+    flex: 0 0 250px; /* Fixed width sidebar */
+    background-color: var(--dark-color);
+    color: white;
+    padding: 25px 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-sidebar h3 {
+    color: var(--primary-color);
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+
+.admin-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-sidebar li {
+    margin-bottom: 10px;
+}
+
+.admin-nav-link {
+    display: block;
+    padding: 10px 15px;
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-weight: 500;
+}
+
+.admin-nav-link:hover {
+    background-color: var(--primary-color);
+    transform: translateX(5px);
+}
+.admin-nav-link:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+/* Active state for navigation links (requires JS to add .active-nav-link class) */
+.admin-nav-link.active-nav-link {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--box-shadow);
+}
+
+
+.admin-content-area {
+    flex-grow: 1;
+    padding: 25px;
+    background-color: var(--body-bg);
+    min-height: 600px; /* Ensure content area has minimum height */
+}
+
+.admin-content-area h2 {
+    font-size: 2em;
+    color: var(--dark-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+.admin-panel-info #currentAdminEmail {
+    font-weight: bold;
+    color: var(--dark-color);
+}
+
+.admin-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+.summary-card h3 {
+    font-size: 1.3em;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.summary-card p {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: var(--dark-color);
+    margin-bottom: 15px;
+}
+
+.summary-card a.button-outline {
+    margin-top: 10px;
+}
+
+.admin-activity-log {
+    margin-top: 30px;
+}
+
+.admin-activity-log h3 {
+    font-size: 1.5em;
+    color: var(--dark-color);
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+#adminActivityList {
+    list-style: none;
+    padding: 0;
+    background-color: var(--light-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#adminActivityList li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.9em;
+    color: #555;
+}
+
+#adminActivityList li:last-child {
+    border-bottom: none;
+}
+
+/* Admin specific views (messages/users) - these are main content sections */
+#adminMessagesView, #adminUserManagementView {
+    padding: 0; /* Remove padding as content-area now has it */
+    box-shadow: none; /* remove redundant shadow */
+    margin-top: 0;
+}
+
+#adminMessagesView h2, #adminUserManagementView h2 {
+    text-align: left;
+}
+
+#adminConversationsListPanel, #adminMessageChatPanel {
+    height: calc(100vh - 250px); /* Adjust height to fit viewport minus header/footer */
+    min-height: 500px;
+}
+
+/* Responsive adjustments for admin views */
+@media (max-width: 768px) {
+    .admin-dashboard-layout {
+        flex-direction: column;
+        margin-top: 15px;
+    }
+    .admin-sidebar {
+        flex-basis: auto; /* Allow sidebar to take auto height */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Shadow below sidebar */
+        border-radius: var(--border-radius);
+        margin-bottom: 15px;
+    }
+    .admin-content-area {
+        padding: 15px;
+    }
+    .admin-summary-cards {
+        grid-template-columns: 1fr; /* Stack cards vertically */
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-dashboard-layout {
+        margin: 10px auto;
+    }
+    .admin-content-area h2 {
+        font-size: 1.6em;
+    }
+    .admin-sidebar {
+        padding: 15px;
+    }
+    .admin-sidebar h3 {
+        font-size: 1.2em;
+    }
+    .admin-nav-link {
+        font-size: 0.9em;
+        padding: 8px 10px;
+    }
+    .summary-card h3 {
+        font-size: 1.1em;
+    }
+    .summary-card p {
+        font-size: 1.8em;
+    }
+    .admin-activity-log h3 {
+        font-size: 1.3em;
+    }
+}

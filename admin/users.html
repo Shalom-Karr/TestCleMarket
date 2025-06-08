@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin User Management - Cleveland Marketplace</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#007bff">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TM7DBB515N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TM7DBB515N', { 'send_page_view': false });
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div id="authContainer">
+            <span id="userEmailDisplayHeader" class="header-email-display" style="display:none;"></span>
+            <button id="logoutBtnHeader" class="auth-button button-danger" style="display:none;"><span>Logout</span></button>
+        </div>
+        <div class="header-main-content">
+            <h1>Cleveland Marketplace</h1>
+            <h2>Admin Panel - User Management</h2>
+        </div>
+    </header>
+    <main>
+        <div class="admin-dashboard-layout">
+            <nav class="admin-sidebar">
+                <h3>Admin Tools</h3>
+                <ul>
+                    <li><a href="admin.html" class="admin-nav-link">Dashboard</a></li>
+                    <li><a href="messages.html" class="admin-nav-link">View All Messages</a></li>
+                    <li><a href="users.html" class="admin-nav-link active-nav-link">User Management</a></li>
+                    <li><a href="../index.html" class="admin-nav-link">← Back to Main Site</a></li>
+                </ul>
+            </nav>
+            <div class="admin-content-area">
+                <div id="adminUserManagementView">
+                    <h2>User Management</h2>
+                    <div class="admin-panel-info">
+                        <p>View users and perform administrative actions.</p>
+                    </div>
+                    <div class="admin-actions-bar">
+                         <input type="text" id="adminUserSearch" placeholder="Search users by email or display name..." class="admin-search-bar">
+                        <button id="adminInviteUserBtn" class="button-success">Invite New User</button>
+                    </div>
+                    <div id="adminUserListContainer">
+                        <p class="loading-text">Loading users...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Manage User Blocks Modal -->
+    <div id="adminManageUserBlocksModal" class="modal"> <div class="modal-content"> <span class="close-button" id="closeAdminManageUserBlocksModalBtn">×</span> <h2>Manage Message Blocks for <span id="manageBlocksForUserName">User</span></h2> <p><small>User ID: <span id="manageBlocksForUserId"></span></small></p> <div class="admin-panel-info"> <p>Block <strong class="user-name-placeholder">User</strong> from sending messages to another specific user, or unblock them. These are admin-enforced blocks.</p> </div> <div class="profile-section"> <h3>Block <strong class="user-name-placeholder">User</strong> From Messaging Another User:</h3> <form id="adminBlockUserForm"> <input type="hidden" id="blockerAdminActionUserId"> <div> <label for="targetUserToBlockIdentifier">Target User (Email or Display Name to protect):</label> <input type="text" id="targetUserToBlockIdentifier" placeholder="Enter email/name of user to protect" required class="modal-search-bar"> </div> <div id="adminBlockTargetSearchResults" class="user-select-list-container" style="max-height: 150px; margin-bottom:15px;"></div> <button type="submit" class="button-warning profile-action-button"> Prevent <strong class="user-name-placeholder">User</strong> from Messaging Selected Target </button> </form> </div> <div class="profile-section"> <h3><strong class="user-name-placeholder">User</strong> is Admin-Blocked From Messaging:</h3> <div id="adminCurrentUserBlocksList" class="block-list-container"> <p>Loading block list...</p> </div> </div> <div class="profile-section"> <h3>Other Users Admin-Blocked From Messaging <strong class="user-name-placeholder">User</strong>:</h3> <div id="adminBlockedByOthersList" class="block-list-container"> <p>Loading list...</p> </div> </div> </div> </div>
+    
+    <div id="toastNotification" class="toast-notification"></div>
+    <footer>
+        <div class="footer-content">
+            <p>© <span id="currentYearAdminUsers"></span> Cleveland Marketplace. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        if (document.getElementById('currentYearAdminUsers')) {
+            document.getElementById('currentYearAdminUsers').textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>

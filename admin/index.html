@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Admin Login - Cleveland Marketplace</title>
+    <meta name="robots" content="noindex, nofollow"> <!-- Prevent indexing of admin login -->
+    
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#007bff">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TM7DBB515N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TM7DBB515N', { 'send_page_view': false });
+    </script>
+    
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <div class="header-main-content" style="padding-top: 1em;">
+            <h1>Cleveland Marketplace</h1>
+            <h2>Admin Login</h2>
+        </div>
+    </header>
+
+    <main>
+        <div id="adminLoginContent" class="modal-content" style="display: flex; flex-direction:column; position: static; transform: none; opacity: 1; visibility: visible; margin: 50px auto; max-width: 500px;">
+            <h2>Admin Login Required</h2>
+            <p style="text-align: center; margin-bottom: 25px;">Please use your administrator credentials to access the dashboard.</p>
+            <form id="loginForm"> 
+                <div><label for="loginEmail">Email:</label><input type="email" id="loginEmail" name="loginEmail" required></div> 
+                <div class="password-toggle-container"> 
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="loginPassword" required> 
+                    <button type="button" class="password-toggle-btn" title="Show Password"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> 
+                    </button> 
+                </div> 
+                <div class="cf-turnstile" id="login-turnstile-widget" data-sitekey="0x4AAAAAABeY1KpLewbnc27k" style="margin: 15px auto;"></div> 
+                <button type="submit" class="button-primary">Login</button> 
+                <p id="loginMessage" class="form-message"></p> 
+                <p class="auth-switch-link" style="margin-top: 10px;"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+                <p class="auth-switch-link" style="margin-top: 20px;"><a href="../index.html">← Back to Main Site</a></p>
+            </form> 
+        </div>
+    </main>
+
+    <!-- Modals are still needed for functionality like 2FA if triggered -->
+    <div id="twoFactorAuthModal" class="modal"> <div class="modal-content"> <span class="close-button" id="closeTwoFactorAuthModalBtn">×</span> <h2>Two-Factor Verification</h2> <form id="twoFactorAuthForm"> <p id="twoFactorAuthInstruction">A 6-digit verification code has been sent to your email. Please enter it below.</p> <div> <label for="twoFactorAuthCode">Verification Code:</label> <input type="text" id="twoFactorAuthCode" name="twoFactorAuthCode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required> </div> <button type="submit" class="button-primary">Verify Code</button> <p id="twoFactorAuthMessage" class="form-message"></p> </form> </div> </div>
+
+    <div id="toastNotification" class="toast-notification"></div>
+
+    <footer>
+        <div class="footer-content">
+            <p>© <span id="currentYearAdminLogin"></span> Cleveland Marketplace. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        if (document.getElementById('currentYearAdminLogin')) {
+            document.getElementById('currentYearAdminLogin').textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>
