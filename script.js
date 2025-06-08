@@ -926,7 +926,6 @@ async function registerPeriodicSync() {
 }
 
 function assignGlobalDOMElements() {
-    // Global Header & Auth Elements
     userEmailDisplayHeader = getElement('userEmailDisplayHeader');
     loginBtn = getElement('loginBtn');
     signupBtn = getElement('signupBtn');
@@ -935,8 +934,6 @@ function assignGlobalDOMElements() {
     editProfileBtn = getElement('editProfileBtn');
     logoutBtnHeader = getElement('logoutBtnHeader');
     adminDashboardBtn = getElement('adminDashboardBtn');
-
-    // Modals
     postItemModal = getElement('postItemModal');
     closePostModalBtn = postItemModal ? postItemModal.querySelector('.close-button') : null;
     postItemForm = getElement('postItemForm');
@@ -951,7 +948,6 @@ function assignGlobalDOMElements() {
     adminManageUserBlocksModal = getElement('adminManageUserBlocksModal');
     closeAdminManageUserBlocksModalBtn = adminManageUserBlocksModal ? getElement('closeAdminManageUserBlocksModalBtn') : null;
 
-    // Form fields
     if (postItemForm) {
         postItemNameField = getElement('post_itemName');
         postItemDescriptionField = getElement('post_itemDescription');
@@ -987,7 +983,6 @@ function assignGlobalDOMElements() {
         editNewImageUrlField = getElement('edit_newImageUrlField');
     }
     
-    // Auth Page Forms
     signupForm = getElement('signupForm');
     if(signupForm) {
         signupDisplayNameField = getElement('signupDisplayName');
@@ -1010,7 +1005,6 @@ function assignGlobalDOMElements() {
         logoutFromProfileBtn = getElement('logoutFromProfileBtn');
     }
 
-    // Main Content Views
     mainListingsView = getElement('mainListingsView');
     itemDetailView = getElement('itemDetailView');
     messagesView = getElement('messagesView');
@@ -1098,7 +1092,6 @@ function assignGlobalDOMElements() {
         totalConversationsCount = getElement('totalConversationsCount');
     }
 
-    // Global utility elements
     toastNotification = getElement('toastNotification');
     supportChatBtn = getElement('supportChatBtn');
     currentYearSpan = getElement('currentYear');
@@ -1237,13 +1230,20 @@ function setupMessagesPageEventListeners() {
 }
 
 function setupAdminUsersPageEventListeners() {
-    // ... all admin/users.html specific listeners
+    if (adminUserSearch) {
+        adminUserSearch.addEventListener('input', (e) => {
+            if (adminUserSearch.searchTimeout) clearTimeout(adminUserSearch.searchTimeout);
+            adminUserSearch.searchTimeout = setTimeout(() => {
+                fetchAllUsersForAdmin(e.target.value.trim());
+            }, 500);
+        });
+    }
+    if (adminInviteUserBtn) adminInviteUserBtn.addEventListener('click', handleAdminInviteUser);
 }
 
 function setupModalEventListeners() {
     // ... all modal interior listeners
 }
-
 
 function setupRealtimeSubscriptions() {
     if (!supabaseClient) return;
@@ -1271,17 +1271,52 @@ function setupRealtimeSubscriptions() {
                 isSuperAdmin ? await fetchAllConversationsForAdmin() : await fetchUserConversations();
                 await updateAuthUI(currentUser);
             })
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'message_reactions' }, async (payload) => {
-                if (currentOpenConversationId && (payload.new?.message_id || payload.old?.message_id)) {
-                    const msgElement = document.querySelector(`.message-wrapper[data-message-id="${payload.new?.message_id || payload.old?.message_id}"]`);
-                    if (msgElement) { // Only refresh if the message is visible
-                       isSuperAdmin ? await fetchMessagesForAdminChat(currentOpenConversationId) : await fetchMessagesForConversation(currentOpenConversationId, false, false);
-                    }
-                }
-            })
             .subscribe();
     }
 }
+
+function storeInitialDeepLink() {
+    const searchParams = new URLSearchParams(window.location.search);
+    initialDeepLinkItemId = searchParams.get('listingId');
+    initialDeepLinkConversationId = searchParams.get('conversationId');
+
+    if (initialDeepLinkItemId) {
+        initialDeepLinkPath = '/itemDetail';
+    } else if (initialDeepLinkConversationId) {
+        initialDeepLinkPath = '/messages';
+    } else if (isIndexPage) {
+        initialDeepLinkPath = '/listings';
+    }
+}
+
+async function handleDeepLinkAfterLogin() {
+    if (mainListingsView) mainListingsView.style.display = 'none';
+    if (itemDetailView) itemDetailView.style.display = 'none';
+    if (messagesView) messagesView.style.display = 'none';
+
+    if (isIndexPage) {
+        if (initialDeepLinkPath === '/itemDetail' && initialDeepLinkItemId) {
+            await showItemDetailPage(initialDeepLinkItemId);
+        } else {
+            if (mainListingsView) mainListingsView.style.display = 'block';
+            await fetchListings(true);
+        }
+    } else if (isMessagesPage) {
+        if (messagesView) messagesView.style.display = 'block';
+        await showMessagesView();
+        if (initialDeepLinkConversationId) {
+            setTimeout(() => {
+                const convoItem = document.querySelector(`.conversation-item[data-conversation-id="${initialDeepLinkConversationId}"]`);
+                if (convoItem) {
+                    convoItem.click();
+                } else {
+                    console.warn("Deep linked conversation not found in list.");
+                }
+            }, 1000);
+        }
+    }
+}
+
 
 // --- MAIN EXECUTION ---
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1318,6 +1353,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
         try {
             const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+            console.log('SW registered:', registration.scope);
             const sendUrlToSw = () => { if (navigator.serviceWorker.controller && SUPABASE_URL) { navigator.serviceWorker.controller.postMessage({ type: 'SET_SUPABASE_URL', url: SUPABASE_URL }); } };
             if (navigator.serviceWorker.controller) { sendUrlToSw(); } else { navigator.serviceWorker.addEventListener('controllerchange', sendUrlToSw); }
         } catch (error) { console.error('SW registration failed:', error); }
@@ -1330,42 +1366,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     await updateAuthUI(session ? session.user : null);
     
     // --- Page-Specific Logic ---
-    if (isAdminPage) {
-        const isAdminSessionActive = sessionStorage.getItem('isAdminAuthenticated') === 'true';
-        if (!isSuperAdmin || !isAdminSessionActive) {
-            if (!isAdminLoginPage) {
-                showToast("Admin authentication required.", "error");
-                sessionStorage.removeItem('isAdminAuthenticated');
-                window.location.replace(`/admin/index.html?redirect_to=${encodeURIComponent(window.location.pathname)}`);
-                return;
-            }
-        } else { 
-            if (isAdminLoginPage) {
-                window.location.replace('/admin/admin.html');
-                return;
-            }
-            if (isAdminDashboardPage) await fetchAdminDashboardSummary();
-            if (isAdminUsersPage) await fetchAllUsersForAdmin();
-            if (isAdminMessagesPage) await fetchAllConversationsForAdmin();
-        }
-    } else if (isLoginPage || isSignupPage) {
-        if (currentUser) {
+    if (currentUser) {
+        if (isLoginPage || isSignupPage || (isAdminLoginPage && isSuperAdmin)) {
             const searchParams = new URLSearchParams(window.location.search);
-            const redirectTo = searchParams.get('redirect_to') || '/index.html';
+            const redirectTo = searchParams.get('redirect_to') || (isSuperAdmin ? '/admin/admin.html' : '/index.html');
             window.location.replace(redirectTo);
             return;
         }
-    } else if (isIndexPage) {
+        if (isAdminPage && !isSuperAdmin) {
+            showToast("Access Denied.", "error");
+            window.location.replace('/index.html');
+            return;
+        }
+    } else {
+        if (isMessagesPage || (isAdminPage && !isAdminLoginPage)) {
+            window.location.replace(`/login.html?redirect_to=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+            return;
+        }
+    }
+
+    if (isAdminPage && isSuperAdmin) {
+        const isAdminSessionActive = sessionStorage.getItem('isAdminAuthenticated') === 'true';
+        if (!isAdminSessionActive && !isAdminLoginPage) {
+            showToast("Admin authentication required.", "error");
+            sessionStorage.removeItem('isAdminAuthenticated');
+            window.location.replace(`/admin/index.html?redirect_to=${encodeURIComponent(window.location.pathname)}`);
+            return;
+        }
+        if (isAdminDashboardPage) await fetchAdminDashboardSummary();
+        if (isAdminUsersPage) await fetchAllUsersForAdmin();
+        if (isAdminMessagesPage) await fetchAllConversationsForAdmin();
+    } 
+    else if (isIndexPage) {
         storeInitialDeepLink();
         await handleDeepLinkAfterLogin();
     } else if (isMessagesPage) {
-        if (!currentUser) {
-            window.location.replace(`/login.html?redirect_to=${encodeURIComponent(window.location.pathname + window.location.search)}`);
-            return;
-        } else {
-            storeInitialDeepLink();
-            await handleDeepLinkAfterLogin();
-        }
+        storeInitialDeepLink();
+        await handleDeepLinkAfterLogin();
     }
 
     setupRealtimeSubscriptions();
