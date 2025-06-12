@@ -1,4 +1,4 @@
-/* style.css - Cleveland Marketplace */
+/* style.css - Cleveland Marketplace - (v2 + v1 Merged & Improved) */
 
 /* --- Global & Base --- */
 :root {
@@ -132,8 +132,8 @@ header h2 {
 }
 #authContainer button.auth-button:focus-visible,
 #authContainer a.auth-button:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0,123,255,.25);
 }
 .auth-icon {
     vertical-align: middle;
@@ -148,12 +148,20 @@ header h2 {
 #authContainer button.button-profile:hover {
     background-color: var(--info-hover);
 }
+#authContainer button.button-profile:focus-visible {
+    outline-color: var(--info-color);
+    box-shadow: 0 0 0 4px rgba(23, 162, 184, .25);
+}
 #authContainer button.button-messages-icon {
     background-color: #5cb85c;
     position: relative;
 }
 #authContainer button.button-messages-icon:hover {
     background-color: #4cae4c;
+}
+#authContainer button.button-messages-icon:focus-visible {
+    outline-color: #5cb85c;
+    box-shadow: 0 0 0 4px rgba(92, 184, 92, .25);
 }
 
 .unread-badge {
@@ -197,7 +205,7 @@ header h2 {
 }
 #postItemBtn:hover { background-color: var(--success-hover); box-shadow: 0 5px 12px rgba(0,0,0,0.25); transform: translateY(-2px); }
 #postItemBtn:active { background-color: #1e7e34; transform: translateY(0px); box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
-#postItemBtn:focus-visible { outline: 2px solid var(--success-color); outline-offset: 2px; }
+#postItemBtn:focus-visible { outline: 2px solid var(--success-color); outline-offset: 2px; box-shadow: 0 0 0 4px rgba(40,167,69,.25); }
 
 /* --- Login/Signup Pages --- */
 .auth-page-container {
@@ -227,7 +235,7 @@ header h2 {
     font-weight: 600;
 }
 
-.auth-form-container form div {
+.auth-form-container form div:not(.password-toggle-container) {
     margin-bottom: 20px;
 }
 
@@ -257,6 +265,7 @@ h2#listingsSectionTitle.section-title { font-size: 2em; color: var(--dark-color)
 .search-container { display: flex; flex-grow: 1; min-width: 250px; justify-content: center; }
 #searchBar { width: 100%; max-width: 550px; padding: 12px 18px; font-size: 1em; border: 1px solid var(--border-color); border-radius: 25px; box-shadow: var(--box-shadow); transition: border-color 0.2s ease, box-shadow 0.2s ease; }
 #searchBar:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,123,255,.25), var(--box-shadow); }
+
 .filter-sort-controls {
     display: flex;
     flex-wrap: wrap;
@@ -327,8 +336,8 @@ h2#listingsSectionTitle.section-title { font-size: 2em; color: var(--dark-color)
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .button-outline:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,123,255,.25);
 }
 .button-danger { background-color: var(--danger-color); }
 .button-danger:hover { background-color: var(--danger-hover); }
@@ -337,26 +346,34 @@ h2#listingsSectionTitle.section-title { font-size: 2em; color: var(--dark-color)
 #listingsContainer > p.loading-text { grid-column: 1 / -1; text-align: center; font-size: 1.1em; color: var(--muted-color); padding: 50px 0; }
 .listing-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--box-shadow); display: flex; flex-direction: column; transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out; cursor: pointer; }
 .listing-card:hover { transform: translateY(-6px) scale(1.015); box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-color: var(--primary-color); }
-.listing-card:focus-within { outline: 2px solid var(--primary-color); outline-offset: 3px; }
+.listing-card:focus-within { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(0,123,255,.25), 0 10px 25px rgba(0,0,0,0.15); }
 .listing-card img { width: 100%; height: 200px; object-fit: cover; border-radius: calc(var(--border-radius) - 1px); margin-bottom: 15px; background-color: #eee; }
 .no-image-placeholder { height:200px; background:#f0f0f0; display:flex; align-items:center; justify-content:center; border-radius:calc(var(--border-radius) - 1px); margin-bottom:15px; color:var(--muted-color); font-style: italic; }
-.listing-card h3 { margin-top: 0; margin-bottom: 10px; color: var(--dark-color); font-size: 1.35em; line-height: 1.35; }
-.listing-card p { margin-bottom: 8px; color: #555; line-height: 1.5; font-size: 0.95em; flex-grow: 1; }
-.listing-card p strong { color: var(--text-color); }
-.listing-card p.price-display { font-weight: bold; font-size: 1.1em; color: var(--primary-color); margin-bottom: 12px; }
-.listing-card small { display: block; margin-top: 12px; color: var(--muted-color); font-size: 0.85em; text-align: right; }
-.listing-card .action-buttons { margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end; }
+
+/* NEW/IMPROVEMENT: Cleaner Listing Card Layout */
+.listing-card .card-content { display: flex; flex-direction: column; flex-grow: 1; }
+.listing-card h3 { margin-top: 0; margin-bottom: 5px; color: var(--dark-color); font-size: 1.35em; line-height: 1.35; }
+.listing-card p.price-display { font-weight: bold; font-size: 1.25em; color: var(--primary-color); margin-bottom: 12px; margin-top: 0; }
+.listing-card p { margin-top: 0; margin-bottom: 8px; color: #555; line-height: 1.5; font-size: 0.95em; flex-grow: 1; }
+.listing-card p.listing-contact-info { display: none; } /* Hide contact on card view */
+.listing-card .card-footer { margin-top: auto; padding-top: 12px; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+.listing-card small { color: var(--muted-color); font-size: 0.85em; text-align: left; }
+.listing-card .action-buttons { margin-top: 0; gap: 10px; justify-content: flex-end; }
 .listing-card .action-buttons button { padding: 7px 12px; font-size: 0.85em; border-radius: var(--border-radius); border: 1px solid transparent; cursor: pointer; color: white; transition: background-color 0.2s, transform 0.1s ease, box-shadow 0.2s ease; font-weight: 500;}
 .listing-card .action-buttons button:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
-.listing-card .action-buttons button:focus-visible { outline-offset: 2px; }
+.listing-card .action-buttons button:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,0,0,.15); }
 .listing-card .action-buttons .edit-button { background-color: var(--warning-color); color: var(--dark-color);}
 .listing-card .action-buttons .edit-button:hover { background-color: var(--warning-hover); }
+.listing-card .action-buttons .edit-button:focus-visible { box-shadow: 0 0 0 3px rgba(255,193,7,.3); }
 .listing-card .action-buttons .delete-button { background-color: var(--danger-color); }
 .listing-card .action-buttons .delete-button:hover { background-color: var(--danger-hover); }
+.listing-card .action-buttons .delete-button:focus-visible { box-shadow: 0 0 0 3px rgba(220,53,69,.3); }
+
 .load-more-container { text-align: center; margin: 35px 0; }
 #loadMoreBtn { background-color: var(--primary-color); color: white; border: none; padding: 12px 35px; border-radius: 25px; cursor: pointer; font-size: 1.05em; font-weight: 500; box-shadow: var(--box-shadow); transition: background-color 0.2s ease, transform 0.1s ease; }
 #loadMoreBtn:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
 #loadMoreBtn:disabled { background-color: #ccc; cursor: not-allowed; }
+#loadMoreBtn:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(0,123,255,.25); }
 
 #itemDetailView { padding: 25px; background-color: var(--card-bg); border-radius: var(--border-radius); box-shadow: var(--box-shadow-lg); margin-top: 25px; max-width: 850px; margin-left: auto; margin-right: auto; }
 #backToListingsBtnFromDetail, #backToListingsFromMessagesBtn { margin-bottom: 25px; }
@@ -371,7 +388,8 @@ h2#listingsSectionTitle.section-title { font-size: 2em; color: var(--dark-color)
 #detailItemSellerInfo h3 { margin-top: 0; border-bottom: none; padding-bottom: 0; font-size: 1.2em; }
 #detailItemSellerInfo p#sellerNameDisplay { font-size: 1.05em; color: var(--primary-color); font-weight: 500; margin-bottom: 0; }
 #itemDetailContent #detailItemPostedDate { display: block; font-size: 0.9em; color: var(--muted-color); text-align: right; margin-top: 25px; }
-#messageSellerBtn.button-primary { width: auto; padding: 12px 25px; margin-top: 25px; font-size: 1em;}
+/* IMPROVEMENT: Message seller button now has less top margin to be placed higher in HTML */
+#messageSellerBtn.button-primary { width: auto; padding: 12px 25px; margin-top: 10px; font-size: 1em;}
 
 #itemCommentsSection { margin-top: 35px; padding-top: 30px; border-top: 1px solid var(--border-color); }
 #itemCommentsSection h3 { font-size: 1.5em; margin-bottom: 25px; color: var(--dark-color); padding-bottom: 12px; border-bottom: 1px solid #eaeaea; font-weight: 600; }
@@ -388,20 +406,10 @@ h2#listingsSectionTitle.section-title { font-size: 2em; color: var(--dark-color)
 #addCommentForm textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,123,255,.25); }
 #addCommentForm button[type="submit"].button-primary { padding: 12px 28px; font-size: 1em; margin-top: 0;}
 
-#messagesView {
-    padding: 0;
-    background-color: #f0f2f5;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow-lg);
-    margin-top: 25px;
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden;
-}
+/* --- Messaging System Overhaul --- */
+#messagesView { padding: 0; background-color: #f0f2f5; border-radius: var(--border-radius); box-shadow: var(--box-shadow-lg); margin-top: 25px; max-width: 1100px; margin-left: auto; margin-right: auto; overflow: hidden; }
 #messagesView > h2 { display: none; }
 #messagesView #startNewConversationBtn.button-primary { display: block; width: auto; margin: 15px auto 20px auto; padding: 10px 20px; font-size: 0.95em; }
-
 .messages-layout { display: flex; gap: 0; min-height: calc(100vh - 180px); background-color: var(--card-bg); border-radius: var(--border-radius); }
 #conversationsListPanel { flex: 0 0 320px; min-width: 280px; background-color: #f8f9fa; border-right: 1px solid #e0e0e0; overflow-y: auto; display: flex; flex-direction: column; }
 #conversationsListPanel h4 { margin:0; padding: 18px 15px; border-bottom: 1px solid #e0e0e0; font-weight: 500; color: #333; font-size: 1.1em; flex-shrink: 0; }
@@ -418,7 +426,8 @@ h2#listingsSectionTitle.section-title { font-size: 2em; color: var(--dark-color)
 #conversationsListInner .conversation-item.unread:not(.active-conversation) { background-color: #f0f8ff; border-left: 4px solid var(--info-color); padding-left: 11px; }
 #conversationsListInner .conversation-item p { margin: 0; font-size: 0.95em; }
 .conversation-item .convo-user { font-weight: 600; color: #202124; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.conversation-item .convo-topic { font-size: 0.85em; color: #5f6368; margin-top: 1px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* IMPROVEMENT: Conversation list readability */
+.conversation-item .convo-topic { font-size: 0.85em; color: var(--secondary-color); font-weight: 500; margin-top: 1px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .conversation-item .convo-last-message { font-size: 0.9em; color: var(--muted-color); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #messageChatPanel { flex-grow: 1; display: flex; flex-direction: column; background-color: #ffffff; padding: 0; }
 #messageChatPanel h3#chatWithInfo { margin:0; padding: 15px 20px; background-color: #f8f9fa; border-bottom: 1px solid #e0e0e0; font-size: 1.1em; color: #202124; font-weight: 500; line-height: 1.3; flex-shrink: 0; }
@@ -450,7 +459,6 @@ h2#listingsSectionTitle.section-title { font-size: 2em; color: var(--dark-color)
 .reaction-item.user-reacted { background-color: var(--primary-color); color: white; border-color: var(--primary-hover); }
 .reaction-item .reaction-emoji { margin-right: 3px; }
 .reaction-item .reaction-count { font-weight: 500; }
-
 #sendMessageForm { padding: 10px 12px; background-color: #f0f2f5; border-top: 1px solid #dde1e6; display: flex; flex-direction: column; }
 .message-input-row { display: flex; align-items: flex-end; width: 100%; gap: 8px; }
 #sendMessageForm textarea { flex-grow: 1; border: 1px solid #ccd0d5; border-radius: 18px; padding: 8px 12px; min-height: 20px; line-height: 1.4; box-shadow: none; resize: none; font-size: 0.95em; transition: border-color 0.2s ease; overflow-y: auto; max-height: 100px; margin:0; }
@@ -469,47 +477,20 @@ label[for="messageAttachment"].file-attach-label svg { width: 20px; height: 20px
 #replyPreviewContent strong { font-weight: 600; color: #333; }
 #cancelReplyBtn { background: none; border: none; font-size: 1.4em; cursor: pointer; color: #777; padding: 0 3px; line-height: 1; flex-shrink: 0; }
 #cancelReplyBtn:hover { color: #333; }
+/* --- End of Messaging System --- */
 
-.password-toggle-container {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-}
-.password-toggle-container label {
-    flex-basis: 100%;
-}
+.password-toggle-container { position: relative; display: flex; flex-wrap: wrap; align-items: flex-end; margin-bottom: 20px; }
+.password-toggle-container label { flex-basis: 100%; }
 .password-toggle-container input[type="password"],
-.password-toggle-container input[type="text"] { /* To catch it when type is changed */
-    flex-grow: 1;
-    padding-right: 45px;
-    margin-bottom: 0;
-}
-.password-toggle-btn {
-    position: absolute;
-    right: 1px;
-    bottom: 1px;
-    height: calc(100% - 2px);
-    width: 40px;
-    background: transparent;
-    border: none;
-    border-left: 1px solid var(--border-color);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted-color);
-    transition: color 0.2s ease;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
-}
-
+.password-toggle-container input[type="text"] { flex-grow: 1; padding-right: 45px; margin-bottom: 0; }
+.password-toggle-btn { position: absolute; right: 1px; bottom: 1px; height: calc(100% - 2px); width: 40px; background: transparent; border: none; border-left: 1px solid var(--border-color); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--muted-color); transition: color 0.2s ease; border-radius: 0 var(--border-radius) var(--border-radius) 0; }
 .password-toggle-btn:hover { color: #343a40; }
 .password-toggle-btn svg { width: 20px; height: 20px; }
 
 .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow-y: auto; background-color: rgba(0,0,0,0.65); align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s; padding: 20px 0; }
-.modal.modal-visible { opacity: 1; visibility: visible; transition: opacity 0.3s ease-in-out, visibility 0s linear 0s; }
+.modal.modal-visible, .modal[style*="display: flex"] { opacity: 1; visibility: visible; transition: opacity 0.3s ease-in-out, visibility 0s linear 0s; }
 .modal-content { background-color: var(--modal-bg); padding: 30px 35px; border: 1px solid var(--border-color); width: 90%; max-width: 600px; border-radius: var(--border-radius); box-shadow: var(--box-shadow-lg); position: relative; opacity: 0; transform: translateY(-20px) scale(0.98); transition: opacity 0.25s ease-out 0.1s, transform 0.25s ease-out 0.1s; margin: auto; }
-.modal.modal-visible .modal-content { opacity: 1; transform: translateY(0) scale(1); }
+.modal.modal-visible .modal-content, .modal[style*="display: flex"] .modal-content { opacity: 1; transform: translateY(0) scale(1); }
 .modal-content h2 { margin-top: 0; margin-bottom: 25px; color: var(--dark-color); text-align: center; font-size: 1.75em; font-weight: 600;}
 .close-button { color: #aaa; position: absolute; top: 12px; right: 18px; font-size: 32px; font-weight: bold; line-height: 1; cursor: pointer; background: none; border: none; padding: 5px; z-index: 10; }
 .close-button:hover, .close-button:focus { color: var(--dark-color); text-decoration: none; }
@@ -549,6 +530,7 @@ label[for="messageAttachment"].file-attach-label svg { width: 20px; height: 20px
 #editProfileModal form#editProfileForm button.button-primary.profile-action-button:hover { background-color: var(--success-hover); border-color: var(--success-hover); }
 .profile-modal-content .close-button { color: rgba(255,255,255,0.7); top: 15px; right: 20px; font-size: 28px; position: absolute; z-index: 10; }
 .profile-modal-content .close-button:hover { color: white; }
+
 .price-section { margin-bottom: 18px; }
 .price-input-wrapper { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: var(--border-radius); padding-left: 12px; }
 .price-input-wrapper .dollar-sign { font-size: 1em; color: #555; margin-right: 6px; }
@@ -594,6 +576,7 @@ label[for="messageAttachment"].file-attach-label svg { width: 20px; height: 20px
 .user-select-item:last-child { border-bottom: none; }
 .user-select-item-info .name { font-weight: 500; color: var(--dark-color); }
 .user-select-item-info .email { font-size: 0.85em; color: var(--muted-color); }
+
 footer { background-color: var(--dark-color); color: #adb5bd; padding: 25px 20px; text-align: center; font-size: 0.9em; margin-top: auto; border-top: 3px solid var(--primary-color); display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .footer-about-section { width: 100%; max-width: 1200px; padding: 0 20px; text-align: center; color: #e0e0e0; margin-bottom: 15px; }
 .footer-about-section h2 { font-size: 1.8em; color: white; margin-top: 0; margin-bottom: 15px; font-weight: 600; }
@@ -603,6 +586,7 @@ footer { background-color: var(--dark-color); color: #adb5bd; padding: 25px 20px
 .footer-content a { color: #e9ecef; text-decoration: none; transition: color 0.2s ease; }
 .footer-content a:hover, .footer-content a:focus-visible { color: #fff; text-decoration: underline; }
 
+/* FIX: Support Button Styling */
 #supportChatBtn {
     position: fixed;
     bottom: 30px;
@@ -620,6 +604,10 @@ footer { background-color: var(--dark-color); color: #adb5bd; padding: 25px 20px
     justify-content: center;
     z-index: 999;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    /* Added styles for the '?' character */
+    font-size: 1.8em;
+    font-weight: bold;
+    line-height: 1;
 }
 
 #supportChatBtn:hover {
@@ -627,91 +615,93 @@ footer { background-color: var(--dark-color); color: #adb5bd; padding: 25px 20px
     box-shadow: 0 7px 18px rgba(0,0,0,0.3);
 }
 
-#supportChatBtn svg {
-    width: 28px;
-    height: 28px;
+#supportChatBtn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 3px;
 }
+/* The #supportChatBtn svg rule is now removed. */
 
-@media (max-width: 768px) { 
-    header { padding: 1em; min-height: auto; } 
-    .header-main-content { padding-top: 55px; } 
-    header h1 { font-size: 2em; } 
-    header h2 { font-size: 1.1em; margin-bottom: 15px;} 
-    #postItemBtn { font-size: 1.1em; padding: 12px 25px; } 
-    h2#listingsSectionTitle.section-title { font-size: 1.8em; } 
+
+@media (max-width: 768px) {
+    header { padding: 1em; min-height: auto; }
+    .header-main-content { padding-top: 55px; }
+    header h1 { font-size: 2em; }
+    header h2 { font-size: 1.1em; margin-bottom: 15px;}
+    #postItemBtn { font-size: 1.1em; padding: 12px 25px; }
+    h2#listingsSectionTitle.section-title { font-size: 1.8em; }
     .filter-sort-controls { gap: 10px; padding: 15px; }
     .filter-group { flex-basis: 100%; justify-content: center; }
     .filter-sort-controls input[type="number"],
     .filter-sort-controls select { width: 100px; }
-    #listingsContainer { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding: 0 15px 20px 15px; } 
-    .listing-card { padding: 15px; } 
-    .listing-card img { height: 180px; } 
-    .listing-card h3 { font-size: 1.25em; } 
-    .listing-card p { font-size: 0.9em; } 
-    #itemDetailView { padding: 20px; } 
-    #itemDetailContent #detailItemName { font-size: 1.8em;} 
-    #itemDetailContent #detailItemPrice.price-display { font-size: 1.4em; } 
-    .messages-layout { flex-direction: column; min-height: calc(100vh - 120px); } 
-    #conversationsListPanel { max-width: none; border-right: none; border-bottom: 1px solid var(--border-color); padding-right: 0; margin-bottom: 20px; max-height: 250px; flex-basis: 250px; flex-shrink: 0; } 
-    #messageChatPanel { padding: 0;} 
-    footer { padding: 20px 15px; font-size: 0.85em;} 
+    #listingsContainer { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding: 0 15px 20px 15px; }
+    .listing-card { padding: 15px; }
+    .listing-card img { height: 180px; }
+    .listing-card h3 { font-size: 1.25em; }
+    .listing-card p { font-size: 0.9em; }
+    #itemDetailView { padding: 20px; }
+    #itemDetailContent #detailItemName { font-size: 1.8em;}
+    #itemDetailContent #detailItemPrice.price-display { font-size: 1.4em; }
+    .messages-layout { flex-direction: column; min-height: calc(100vh - 120px); }
+    #conversationsListPanel { max-width: none; border-right: none; border-bottom: 1px solid var(--border-color); padding-right: 0; margin-bottom: 20px; max-height: 250px; flex-basis: 250px; flex-shrink: 0; }
+    #messageChatPanel { padding: 0;}
+    footer { padding: 20px 15px; font-size: 0.85em;}
     .footer-about-section { padding: 0 15px; margin-bottom: 15px; }
     .footer-about-section h2 { font-size: 1.5em; margin-bottom: 10px; }
     .footer-about-section p { font-size: 0.9em; }
 }
-@media (max-width: 675px) { 
-    .header-main-content { padding-top: 60px; } 
-    header h1 { font-size: 1.8em; } 
-    header h2 { font-size: 1.0em; } 
-    h2#listingsSectionTitle.section-title { font-size: 1.7em; } 
+@media (max-width: 675px) {
+    .header-main-content { padding-top: 60px; }
+    header h1 { font-size: 1.8em; }
+    header h2 { font-size: 1.0em; }
+    h2#listingsSectionTitle.section-title { font-size: 1.7em; }
 }
-@media (max-width: 480px) { 
-    header {min-height: 90px;} 
-    .header-main-content { padding-top: 65px; width: 100%; } 
-    header h1 { font-size: 1.6em; margin-bottom: 5px; } 
-    header h2 { font-size: 0.9em; margin-bottom: 12px; } 
-    #postItemBtn { padding: 10px 18px; font-size: 1em; margin-top: 10px; } 
-    #authContainer { top: 10px; right: 10px; gap: 6px; } 
-    #authContainer button.auth-button, #authContainer a.auth-button { padding: 7px 10px; font-size: 0.8em; } 
-    #authContainer button.auth-button span, #authContainer a.auth-button span { display: none; } 
-    #authContainer button.auth-button svg, #authContainer a.auth-button svg { margin-right: 0;} 
-    h2#listingsSectionTitle.section-title { font-size: 1.5em; margin-bottom: 8px; text-align: center;} 
-    .search-container { width: 100%; } 
-    #searchBar { font-size: 0.95em; padding: 10px 15px; } 
+@media (max-width: 480px) {
+    header {min-height: 90px;}
+    .header-main-content { padding-top: 65px; width: 100%; }
+    header h1 { font-size: 1.6em; margin-bottom: 5px; }
+    header h2 { font-size: 0.9em; margin-bottom: 12px; }
+    #postItemBtn { padding: 10px 18px; font-size: 1em; margin-top: 10px; }
+    #authContainer { top: 10px; right: 10px; gap: 6px; }
+    #authContainer button.auth-button, #authContainer a.auth-button { padding: 7px 10px; font-size: 0.8em; }
+    #authContainer button.auth-button span, #authContainer a.auth-button span { display: none; }
+    #authContainer button.auth-button svg, #authContainer a.auth-button svg { margin-right: 0;}
+    h2#listingsSectionTitle.section-title { font-size: 1.5em; margin-bottom: 8px; text-align: center;}
+    .search-container { width: 100%; }
+    #searchBar { font-size: 0.95em; padding: 10px 15px; }
     .filter-sort-controls { flex-direction: column; align-items: stretch; gap: 10px; }
     .filter-group { flex-direction: column; align-items: stretch; gap: 5px; }
     .filter-sort-controls input[type="number"], .filter-sort-controls select { width: auto; max-width: none; }
     .filter-sort-controls label { width: 100%; text-align: left; }
     .filter-group:last-of-type { flex-direction: row; justify-content: space-between; }
     .filter-group:last-of-type .button-primary, .filter-group:last-of-type .button-outline { width: 48%; }
-    #listingsContainer { grid-template-columns: 1fr; gap: 18px; padding: 0 10px 15px 10px; } 
-    .listing-card { padding: 12px; } 
-    .listing-card img { height: 160px; margin-bottom: 12px; } 
-    .listing-card h3 { font-size: 1.15em; margin-bottom: 8px; } 
-    .listing-card p { font-size: 0.85em; margin-bottom: 6px; line-height: 1.4; } 
-    .listing-card p.price-display { font-size: 1.05em; margin-bottom: 10px; } 
-    .listing-card small { font-size: 0.8em; margin-top: 10px; } 
-    .listing-card .action-buttons { margin-top: 12px; gap: 8px; } 
-    .listing-card .action-buttons button { padding: 6px 9px; font-size: 0.8em; } 
-    .modal-content { padding: 20px 25px; max-width: calc(100% - 30px); } 
-    .modal-content h2 { font-size: 1.5em; } 
-    .profile-modal-content #profileModalTitle {font-size: 1.6em;} 
-    .profile-modal-content .profile-user-identifier {font-size: 0.9em;} 
-    .profile-modal-content .profile-section h3 {font-size: 1.15em;} 
-    .modal-content form label:not(.checkbox-label) { font-size: 0.95em; } 
-    .modal-content form input, .modal-content form textarea { padding: 10px; font-size: 1em; } 
-    #itemDetailView { padding: 15px; } 
-    #itemDetailContent #detailItemName { font-size: 1.6em;} 
-    #itemDetailContent #detailItemPrice.price-display { font-size: 1.2em; } 
-    #itemDetailContent #detailItemImage { max-height: 280px; } 
-    #messagesView h2 { font-size: 1.6em; } 
-    #sendMessageForm { flex-direction: column; } 
-    .message-input-row { width: 100%; } 
-    #sendMessageForm textarea { margin-bottom: 0;} 
-    #fileNameDisplay { text-align: center; margin-top: 5px; width: 100%; } 
-    #messageChatPanel { min-height: 350px; } 
-    #supportChatBtn { width: 50px; height: 50px; font-size: 1.4em; bottom: 20px; right: 20px; } 
-    #messagesView #startNewConversationBtn.button-primary { width: 100%; font-size: 0.95em; padding: 12px 20px;} 
-    footer {padding: 15px 10px; font-size: 0.8em;} 
+    #listingsContainer { grid-template-columns: 1fr; gap: 18px; padding: 0 10px 15px 10px; }
+    .listing-card { padding: 12px; }
+    .listing-card img { height: 160px; margin-bottom: 12px; }
+    .listing-card h3 { font-size: 1.15em; margin-bottom: 8px; }
+    .listing-card p { font-size: 0.85em; margin-bottom: 6px; line-height: 1.4; }
+    .listing-card p.price-display { font-size: 1.05em; margin-bottom: 10px; }
+    .listing-card small { font-size: 0.8em; }
+    .listing-card .action-buttons { margin-top: 0; gap: 8px; }
+    .listing-card .action-buttons button { padding: 6px 9px; font-size: 0.8em; }
+    .modal-content { padding: 20px 25px; max-width: calc(100% - 30px); }
+    .modal-content h2 { font-size: 1.5em; }
+    .profile-modal-content #profileModalTitle {font-size: 1.6em;}
+    .profile-modal-content .profile-user-identifier {font-size: 0.9em;}
+    .profile-modal-content .profile-section h3 {font-size: 1.15em;}
+    .modal-content form label:not(.checkbox-label) { font-size: 0.95em; }
+    .modal-content form input, .modal-content form textarea { padding: 10px; font-size: 1em; }
+    #itemDetailView { padding: 15px; }
+    #itemDetailContent #detailItemName { font-size: 1.6em;}
+    #itemDetailContent #detailItemPrice.price-display { font-size: 1.2em; }
+    #itemDetailContent #detailItemImage { max-height: 280px; }
+    #messagesView h2 { font-size: 1.6em; }
+    #sendMessageForm { flex-direction: column; }
+    .message-input-row { width: 100%; }
+    #sendMessageForm textarea { margin-bottom: 0;}
+    #fileNameDisplay { text-align: center; margin-top: 5px; width: 100%; }
+    #messageChatPanel { min-height: 350px; }
+    #supportChatBtn { width: 50px; height: 50px; font-size: 1.6em; bottom: 20px; right: 20px; }
+    #messagesView #startNewConversationBtn.button-primary { width: 100%; font-size: 0.95em; padding: 12px 20px;}
+    footer {padding: 15px 10px; font-size: 0.8em;}
     .footer-content p { margin: 3px 0;}
 }

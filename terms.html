@@ -12,33 +12,39 @@
 <body>
     <header>
         <div id="authContainer">
+            <!-- NEW: Email display for logged-in users, now always present in header -->
             <span id="userEmailDisplayHeader" class="header-email-display" style="display:none;"></span>
             
             <button id="loginBtn" class="auth-button" style="display:none;">Login</button>
             <button id="signupBtn" class="auth-button" style="display:none;">Signup</button>
             
+            <!-- NEW: Messages button in header -->
             <button id="messagesHeaderBtn" class="auth-button button-messages-icon" style="display:none;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 <span>Messages</span>
-                <span id="unreadMessagesBadge" class="unread-badge" style="display:none;"></span>
             </button>
             
+            <!-- My Account button -->
             <button id="editProfileBtn" class="auth-button button-profile" style="display:none;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 <span>My Account</span>
             </button>
 
+            <!-- NEW: Logout button directly in header -->
             <button id="logoutBtnHeader" class="auth-button button-danger" style="display:none;">
                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                 <span>Logout</span>
             </button>
-            
-            <a href="admin/index.html" id="adminDashboardBtn" class="auth-button button-special" style="display:none;">Admin Dashboard</a>
+
+            <!-- Admin-only buttons (order adjusted slightly, no change in functionality) -->
+            <button id="adminViewMessagesBtn" class="auth-button button-special" style="display:none;">View All Messages</button>
+            <button id="adminUserManagementBtn" class="auth-button button-admin-extra" style="display:none;">User Management</button>
         </div>
         <div class="header-main-content">
             <h1>Cleveland Marketplace</h1>
             <h2>Terms of Service</h2>
         </div>
+        <a href="/admin" id="adminLoginButton" class="admin-button top-right" style="display:none;">Admin Login</a>
     </header>
 
     <main style="max-width: 800px; margin: 30px auto; padding: 20px;">
@@ -81,22 +87,146 @@
             </p>
         </div>
     </footer>
-
+    <!-- Support Chat Button from index.html -->
     <button id="supportChatBtn" title="Chat with Support" style="display:none;">?</button>
 
-    <!-- Modals (included on all pages for consistency) -->
+    <!-- Post Item Modal -->
     <div id="postItemModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Post Your Item</h2> <form id="postItemForm"> <div> <label for="post_itemName">Item Name:</label> <input type="text" id="post_itemName" name="itemName" required> </div> <div> <label for="post_itemDescription">Description:</label> <textarea id="post_itemDescription" name="itemDescription" required></textarea> </div> <div class="price-section"> <label for="postItemPriceField">Price:</label> <div class="price-input-wrapper"> <span class="dollar-sign">$</span> <input type="number" id="postItemPriceField" name="postItemPriceField" step="0.01" min="0" placeholder="0.00" required> </div> <div class="free-option-container"> <input type="checkbox" id="postItemFreeCheckbox" name="postItemFreeCheckbox"> <label for="postItemFreeCheckbox" class="checkbox-label">Mark as Free</label> </div> </div> <div> <label>Image:</label> <div class="image-source-options"> <input type="radio" id="postImageSourceFile" name="postImageSource" value="file" checked> <label for="postImageSourceFile">Upload File</label> <input type="radio" id="postImageSourceUrl" name="postImageSource" value="url"> <label for="postImageSourceUrl">Use Image URL</label> </div> </div> <div id="postImageFileUploadContainer"> <label for="post_itemImageFile">Image File:</label> <input type="file" id="post_itemImageFile" name="itemImageFile" accept="image/*"> <img id="postItemImagePreview" src="#" alt="Image Preview" style="display:none;"/> </div> <div id="postItemImageUrlContainer" style="display: none;"> <label for="post_itemImageUrlField">Image URL:</label> <input type="url" id="post_itemImageUrlField" name="itemImageUrlField" placeholder="https://example.com/image.png"> </div> <div> <label for="post_itemContact">Contact Info:</label> <input type="text" id="post_itemContact" name="itemContact" required placeholder="Email or Phone"> </div> <button type="submit" class="button-primary"> <span class="button-text">Post Item</span> <span class="button-spinner" style="display: none;"></span> </button> </form> <div class="modal-processing-overlay" style="display: none;"> <div class="spinner-large"></div> <p>Processing...</p> </div> </div> </div>
+    <!-- Edit Item Modal -->
     <div id="editItemModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Edit Item</h2> <form id="editItemForm"> <input type="hidden" id="editItemId"> <input type="hidden" id="editItemOwnerId"> <input type="hidden" id="editItemOriginalImageUrl"> <div><label for="edit_itemName">Item Name:</label><input type="text" id="edit_itemName" name="editItemName" required></div> <div><label for="edit_itemDescription">Description:</label><textarea id="edit_itemDescription" name="editItemDescription" required></textarea></div> <div class="price-section"> <label for="editItemPriceField">Price:</label> <div class="price-input-wrapper"> <span class="dollar-sign">$</span> <input type="number" id="editItemPriceField" name="editItemPriceField" step="0.01" min="0" placeholder="0.00" required> </div> <div class="free-option-container"> <input type="checkbox" id="editItemFreeCheckbox" name="editItemFreeCheckbox"> <label for="editItemFreeCheckbox" class="checkbox-label">Mark as Free</label> </div> </div> <div><label for="edit_itemContact">Contact Info:</label><input type="text" id="edit_itemContact" name="editItemContact" required placeholder="Email or Phone"></div> <div class="current-image-preview"> <p>Current Image:</p> <img id="editItemCurrentImage" src="" alt="Current Item Image" style="display:none;"> </div> <hr style="margin: 20px 0;"> <div> <label>Change Image (Optional):</label> <div class="image-source-options"> <input type="radio" id="editImageSourceNone" name="editImageSource" value="none" checked> <label for="editImageSourceNone">Keep Current</label> <input type="radio" id="editImageSourceFile_Edit" name="editImageSource" value="file"> <label for="editImageSourceFile_Edit">Upload New File</label> <input type="radio" id="editImageSourceUrl_Edit" name="editImageSource" value="url"> <label for="editImageSourceUrl_Edit">Use New URL</label> </div> </div> <div id="editImageFileUploadContainer_Edit" style="display: none;"> <label for="edit_newImageFile">New Image File:</label> <input type="file" id="edit_newImageFile" name="newImageFile" accept="image/*"> <img id="editItemNewImagePreview" src="#" alt="New Image Preview" style="display:none;"/> </div> <div id="editItemImageUrlContainer_Edit" style="display: none;"> <label for="edit_newImageUrlField">New Image URL:</label> <input type="url" id="edit_newImageUrlField" name="newImageUrlField" placeholder="https://example.com/image.png"> </div> <button type="submit" class="button-primary"> <span class="button-text">Save Changes</span> <span class="button-spinner" style="display: none;"></span> </button> </form> <div class="modal-processing-overlay" style="display: none;"> <div class="spinner-large"></div> <p>Processing...</p> </div> </div> </div>
-    <div id="signupModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Create Account</h2> <form id="signupForm"> <div> <label for="signupDisplayName">Display Name (optional):</label> <input type="text" id="signupDisplayName" name="signupDisplayName" placeholder="e.g., ClevelandRocks123"> </div> <div><label for="signupEmail">Email:</label><input type="email" id="signupEmail" name="signupEmail" required></div> <div class="password-toggle-container"> <label for="signupPassword">Password (min 6 chars):</label><input type="password" id="signupPassword" name="signupPassword" required minlength="6"> <button type="button" class="password-toggle-btn" title="Show Password"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> </button> </div> <div> <label for="signupPhoneNumber">Phone Number:</label> <input type="tel" id="signupPhoneNumber" name="signupPhoneNumber" placeholder="e.g., 216-555-1234" required> </div> <div class="cf-turnstile" id="signup-turnstile-widget" data-sitekey="0x4AAAAAABeY1KpLewbnc27k" style="margin: 15px auto;"></div> <button type="submit" class="button-primary">Sign Up</button> <p id="signupMessage" class="form-message"></p> <p class="auth-switch-link">Already have an account? <a href="#" id="switchToLoginLink">Login here</a>.</p> </form> </div> </div>
-    <div id="loginModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Login</h2> <form id="loginForm"> <div><label for="loginEmail">Email:</label><input type="email" id="loginEmail" name="loginEmail" required></div> <div class="password-toggle-container"> <label for="loginPassword">Password:</label><input type="password" id="loginPassword" name="loginPassword" required> <button type="button" class="password-toggle-btn" title="Show Password"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> </button> </div> <div class="cf-turnstile" id="login-turnstile-widget" data-sitekey="0x4AAAAAABeY1KpLewbnc27k" style="margin: 15px auto;"></div> <button type="submit" class="button-primary">Login</button> <p id="loginMessage" class="form-message"></p> <p class="auth-switch-link" style="margin-top: 10px;"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p> </form> </div> </div>
-    <div id="editProfileModal" class="modal"> <div class="modal-content profile-modal-content"> <span class="close-button">×</span> <div class="profile-header"> <h2 id="profileModalTitle">My Account</h2> <p id="profileModalUserEmail" class="profile-user-identifier">user@example.com</p> </div> <div class="profile-section"> <h3>Profile Details</h3> <form id="editProfileForm"> <div> <label for="profileUsername">Display Name:</label> <input type="text" id="profileUsername" name="profileUsername" placeholder="e.g., ClevelandSeller123"> </div> <div style="margin-top: 5px;"> <label for="profilePhoneNumber">Phone Number:</label> <input type="tel" id="profilePhoneNumber" name="profilePhoneNumber" placeholder="Not provided"> </div> <div style="margin-top: 5px;"> <label for="profileEmail">Email:</label> <input type="email" id="profileEmail" name="profileEmail" readonly disabled> </div> <button type="submit" class="button-primary profile-action-button"> <span class="button-text">Save</span> <span class="button-spinner" style="display: none;"></span> </button> </form> </div> <div class="profile-section"> <h3>Actions</h3> <button id="viewMyMessagesFromProfileBtn" class="button-outline profile-action-button">View My Messages</button> <button id="logoutFromProfileBtn" class="button-danger profile-action-button">Logout</button> </div> <div class="modal-processing-overlay" style="display: none;"> <div class="spinner-large"></div> <p>Processing...</p> </div> </div> </div>
-    <div id="selectUserToMessageModal" class="modal"> <div class="modal-content"> <span class="close-button" id="closeSelectUserToMessageModalBtn">×</span> <h2>Start a New Conversation</h2> <p>Search for a user to message by their display name or email.</p> <input type="text" id="selectUserToMessageSearch" placeholder="Search users..." class="modal-search-bar"> <div id="selectUserToMessageList" class="user-select-list-container"> <p class="loading-text">Start typing to search for users...</p> </div> </div> </div>
-    <div id="twoFactorAuthModal" class="modal"> <div class="modal-content"> <span class="close-button" id="closeTwoFactorAuthModalBtn">×</span> <h2>Two-Factor Verification</h2> <form id="twoFactorAuthForm"> <p id="twoFactorAuthInstruction">A 6-digit verification code has been sent to your email. Please enter it below.</p> <div> <label for="twoFactorAuthCode">Verification Code:</label> <input type="text" id="twoFactorAuthCode" name="twoFactorAuthCode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required> </div> <button type="submit" class="button-primary">Verify Code</button> <p id="twoFactorAuthMessage" class="form-message"></p> </form> </div> </div>
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Create Account</h2> <form id="signupForm"> <div> <label for="signupDisplayName">Display Name (optional):</label> <input type="text" id="signupDisplayName" name="signupDisplayName" placeholder="e.g., ClevelandRocks123"> </div> <div><label for="signupEmail">Email:</label><input type="email" id="signupEmail" name="signupEmail" required></div> <div><label for="signupPassword">Password (min 6 chars):</label><input type="password" id="signupPassword" name="signupPassword" required minlength="6"></div>
+                    <!-- NEW: Phone number field -->
+                    <div>
+                        <label for="signupPhoneNumber">Phone Number:</label>
+                        <input type="tel" id="signupPhoneNumber" name="signupPhoneNumber" placeholder="e.g., 216-555-1234" required>
+                    </div>
+                    <!-- Cloudflare Turnstile Widget for Signup -->
+                    <div class="cf-turnstile" id="signup-turnstile-widget" data-sitekey="0x4AAAAAABeY1KpLewbnc27k" style="margin: 15px auto;"></div>
+                    <button type="submit" class="button-primary">Sign Up</button> <p id="signupMessage" class="form-message"></p> <p class="auth-switch-link">Already have an account? <a href="#" id="switchToLoginLink">Login here</a>.</p> </form> </div> </div>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal"> <div class="modal-content"> <span class="close-button">×</span> <h2>Login</h2> <form id="loginForm"> <div><label for="loginEmail">Email:</label><input type="email" id="loginEmail" name="loginEmail" required></div> <div><label for="loginPassword">Password:</label><input type="password" id="loginPassword" name="loginPassword" required></div>
+                    <!-- Cloudflare Turnstile Widget for Login -->
+                    <div class="cf-turnstile" id="login-turnstile-widget" data-sitekey="0x4AAAAAABeY1KpLewbnc27k" style="margin: 15px auto;"></div>
+                    <button type="submit" class="button-primary">Login</button> <p id="loginMessage" class="form-message"></p> <p class="auth-switch-link" style="margin-top: 10px;"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p> </form> </div> </div>
 
+    <!-- Edit Profile Modal / My Account Panel -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content profile-modal-content">
+            <span class="close-button">×</span>
+            <div class="profile-header">
+                <h2 id="profileModalTitle">My Account</h2>
+                <p id="profileModalUserEmail" class="profile-user-identifier">user@example.com</p>
+            </div>
+            <div class="profile-section">
+                <h3>Profile Details</h3>
+                <form id="editProfileForm">
+                    <div>
+                        <label for="profileUsername">Display Name:</label>
+                        <input type="text" id="profileUsername" name="profileUsername" placeholder="e.g., ClevelandSeller123">
+                    </div>
+                    <!-- NEW: Phone number field in profile modal (editable) -->
+                    <div style="margin-top: 5px;">
+                        <label for="profilePhoneNumber">Phone Number:</label>
+                        <!-- Removed 'readonly' and 'disabled' to make it editable -->
+                        <input type="tel" id="profilePhoneNumber" name="profilePhoneNumber" placeholder="Not provided">
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <label for="profileEmail">Email:</label>
+                        <input type="email" id="profileEmail" name="profileEmail" readonly disabled>
+                    </div>
+                    <button type="submit" class="button-primary profile-action-button">
+                        <span class="button-text">Save</span> <!-- Changed text from "Save Display Name" to "Save" -->
+                        <span class="button-spinner" style="display: none;"></span>
+                    </button>
+                </form>
+            </div>
+            
+            <div class="modal-processing-overlay" style="display: none;">
+                <div class="spinner-large"></div>
+                <p>Processing...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Manage User Blocks Modal -->
+    <div id="adminManageUserBlocksModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeAdminManageUserBlocksModalBtn">×</span>
+            <h2>Manage Message Blocks for <span id="manageBlocksForUserName">User</span></h2>
+            <p><small>User ID: <span id="manageBlocksForUserId"></span></small></p>
+
+            <div class="admin-panel-info">
+                <p>Block <strong class="user-name-placeholder">User</strong> from sending messages to another specific user, or unblock them. These are admin-enforced blocks.</p>
+            </div>
+
+            <div class="profile-section">
+                <h3>Block <strong class="user-name-placeholder">User</strong> From Messaging Another User:</h3>
+                <form id="adminBlockUserForm">
+                    <input type="hidden" id="blockerAdminActionUserId">
+                    <div>
+                        <label for="targetUserToBlockIdentifier">Target User (Email or Display Name to protect):</label>
+                        <input type="text" id="targetUserToBlockIdentifier" placeholder="Enter email/name of user to protect" required class="modal-search-bar">
+                    </div>
+                     <div id="adminBlockTargetSearchResults" class="user-select-list-container" style="max-height: 150px; margin-bottom:15px;">
+                        <!-- Search results will appear here -->
+                    </div>
+                    <button type="submit" class="button-warning profile-action-button">
+                        Prevent <strong class="user-name-placeholder">User</strong> from Messaging Selected Target
+                    </button>
+                </form>
+            </div>
+
+            <div class="profile-section">
+                <h3><strong class="user-name-placeholder">User</strong> is Admin-Blocked From Messaging:</h3>
+                <div id="adminCurrentUserBlocksList" class="block-list-container">
+                    <p>Loading block list...</p>
+                </div>
+            </div>
+             <div class="profile-section">
+                <h3>Other Users Admin-Blocked From Messaging <strong class="user-name-placeholder">User</strong>:</h3>
+                <div id="adminBlockedByOthersList" class="block-list-container">
+                    <p>Loading list...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Select User to Message Modal (for regular users) -->
+     <div id="selectUserToMessageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeSelectUserToMessageModalBtn">×</span>
+            <h2>Start a New Conversation</h2>
+            <p>Search for a user to message by their display name or email.</p>
+            <input type="text" id="selectUserToMessageSearch" placeholder="Search users..." class="modal-search-bar">
+            <div id="selectUserToMessageList" class="user-select-list-container">
+                <p class="loading-text">Start typing to search for users...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Two Factor Auth Modal -->
+    <div id="twoFactorAuthModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeTwoFactorAuthModalBtn">×</span>
+            <h2>Two-Factor Verification</h2>
+            <form id="twoFactorAuthForm">
+                <p id="twoFactorAuthInstruction">A 6-digit verification code has been sent to your email. Please enter it below.</p>
+                <div>
+                    <label for="twoFactorAuthCode">Verification Code:</label>
+                    <input type="text" id="twoFactorAuthCode" name="twoFactorAuthCode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required>
+                </div>
+                <button type="submit" class="button-primary">Verify Code</button>
+                <p id="twoFactorAuthMessage" class="form-message"></p>
+            </form>
+        </div>
+    </div>
+    
     <div id="toastNotification" class="toast-notification"></div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="script.js"></script>
     <script>
+        // Specific script for this page to update the year
         if (document.getElementById('currentYearTerms')) {
             document.getElementById('currentYearTerms').textContent = new Date().getFullYear();
         }
