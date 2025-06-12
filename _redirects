@@ -1,4 +1,16 @@
-# _redirects file
-/listing/:item_id /index.html 200
-/listing/:item_name-:item_id /index.html 200
-/messages/conversation/:conversation_id /index.html 200
+# _redirects
+
+# Rewrite rules for our main pages. This allows users to go to /login
+# and see the content of login.html without the URL changing.
+/login      /login.html     200
+/signup     /signup.html    200
+/messages   /messages.html  200
+/admin      /admin.html     200
+/terms      /terms.html     200
+/privacy    /privacy.html   200
+
+# SPA Fallback Rule. This is the most important rule.
+# It handles all dynamic routes that are managed by JavaScript,
+# such as /listing/some-item-name-12345.
+# Any URL not matched above will be served the index.html file.
+/*          /index.html     200

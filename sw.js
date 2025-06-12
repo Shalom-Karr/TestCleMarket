@@ -1,197 +1,207 @@
-// sw.js - Focused on App Shell and Image Caching
+// sw.js - Modern, SPA-First Service Worker for Cleveland Marketplace
 
-const APP_CACHE_NAME = 'cleveland-marketplace-app-shell-v3'; // Increment to force update
-const IMAGE_CACHE_NAME = 'cleveland-marketplace-images-v2'; // Separate cache for images
+// --- CONFIGURATION ---
 
-let SUPABASE_URL_FROM_CLIENT = ''; // Will be set by client script.js
+// Increment this version number every time you update the service worker file.
+// This is crucial to force browsers to update their cached version.
+const APP_CACHE_VERSION = 'v5';
+const APP_CACHE_NAME = `cleveland-marketplace-app-shell-${APP_CACHE_VERSION}`;
+const IMAGE_CACHE_NAME = `cleveland-marketplace-images-${APP_CACHE_VERSION}`;
 
-const APP_SHELL_URLS_TO_CACHE = [
-  '/',                   // Often resolves to index.html
-  '/index.html',         // Or the specific name of your root HTML file
+// This will be populated by a message from the client script.
+let SUPABASE_URL_FROM_CLIENT = '';
+
+// A comprehensive list of all files that make up the "app shell".
+// These are cached on install and make the core app work offline.
+const APP_SHELL_URLS = [
+  '/',
+  '/index.html',
+  '/login.html',
+  '/signup.html',
+  '/messages.html',
+  '/admin.html',
+  '/terms.html',
+  '/privacy.html',
+  '/logo.html',
+  '/offline.html',
   '/style.css',
   '/script.js',
-  '/manifest.json',      // Path relative to sw.js (root if sw.js is root)
-  '/icons/icon-192x192.png', // Ensure these paths are correct
-  '/icons/icon-512x512.png',
-  '/offline.html'      // Your custom offline page
+  '/manifest.json',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png'
 ];
 
-// Install: Cache app shell assets
+
+// --- SERVICE WORKER LIFECYCLE ---
+
+// 1. INSTALL: Fired when the service worker is first installed.
 self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Attempting to install and cache app shell...');
+  console.log(`[SW] Installing v${APP_CACHE_VERSION}...`);
   event.waitUntil(
     caches.open(APP_CACHE_NAME)
       .then((cache) => {
-        console.log('[Service Worker] Caching app shell:', APP_SHELL_URLS_TO_CACHE);
-        // Add all app shell URLs. If any fails, install fails.
-        return cache.addAll(APP_SHELL_URLS_TO_CACHE);
+        console.log('[SW] Caching App Shell...');
+        return cache.addAll(APP_SHELL_URLS);
       })
       .then(() => {
-        console.log('[Service Worker] App shell cached successfully. Skipping waiting.');
-        return self.skipWaiting(); // Activate the new SW immediately
+        // Force the waiting service worker to become the active service worker.
+        console.log('[SW] Install successful. Activating immediately.');
+        return self.skipWaiting();
       })
       .catch(error => {
-        console.error('[Service Worker] App shell caching failed:', error);
-        // If caching fails, the SW won't install properly. Check paths in APP_SHELL_URLS_TO_CACHE.
+        console.error('[SW] App Shell caching failed during install:', error);
       })
   );
 });
 
-// Activate: Clean up old caches
+// 2. ACTIVATE: Fired after install. Used to clean up old caches.
 self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activating...');
-  const cacheWhitelist = [APP_CACHE_NAME, IMAGE_CACHE_NAME]; // Add DATA_CACHE_NAME if you re-introduce it
+  console.log(`[SW] Activating v${APP_CACHE_VERSION}...`);
+  const cacheWhitelist = [APP_CACHE_NAME, IMAGE_CACHE_NAME];
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (!cacheWhitelist.includes(cacheName)) {
-            console.log('[Service Worker] Clearing old cache:', cacheName);
+            console.log('[SW] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     }).then(() => {
-      console.log('[Service Worker] Claiming clients.');
-      return self.clients.claim(); // Ensure new SW takes control of open pages
+      // Tell the active service worker to take control of the page immediately.
+      console.log('[SW] Claiming clients.');
+      return self.clients.claim();
     })
   );
 });
 
-// Fetch: Handle requests
+
+// --- FETCH EVENT HANDLER (THE BRAIN) ---
+
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // 1. Always go to network for non-GET requests and Supabase API/Function calls.
+  // --- STRATEGY 1: Ignore non-GET requests and Supabase API calls ---
+  // These should always go directly to the network.
   if (event.request.method !== 'GET' ||
-      (SUPABASE_URL_FROM_CLIENT && url.origin === SUPABASE_URL_FROM_CLIENT &&
-        (url.pathname.startsWith('/rest/v1/') || url.pathname.startsWith('/functions/v1/'))
+      (SUPABASE_URL_FROM_CLIENT && url.origin === new URL(SUPABASE_URL_FROM_CLIENT).origin &&
+        (url.pathname.startsWith('/rest/') || url.pathname.startsWith('/functions/'))
       )
      ) {
-    event.respondWith(fetch(event.request).catch(err => {
-        console.warn('[Service Worker] Network request failed for POST/API/Function:', event.request.url, err);
-        // Return a generic network error response for these, as offline.html might not be appropriate.
-        return new Response(JSON.stringify({ error: 'Network request failed.'}), {
-            status: 503, // Service Unavailable
-            headers: { 'Content-Type': 'application/json' }
-        });
-    }));
-    return;
+    return; // Let the browser handle it.
   }
 
-  // 2. For Supabase Storage files (images/attachments): Cache first, then network
-  if (SUPABASE_URL_FROM_CLIENT && url.origin === SUPABASE_URL_FROM_CLIENT && url.pathname.startsWith('/storage/v1/object/public/')) {
+  // --- STRATEGY 2: Cache First for Images & Attachments ---
+  // For Supabase storage items, it's best to serve from cache if available for performance.
+  if (SUPABASE_URL_FROM_CLIENT && url.origin === new URL(SUPABASE_URL_FROM_CLIENT).origin && url.pathname.startsWith('/storage/')) {
     event.respondWith(
       caches.open(IMAGE_CACHE_NAME).then(async (cache) => {
         const cachedResponse = await cache.match(event.request);
         if (cachedResponse) {
-          // console.log('[Service Worker] Serving image from cache:', event.request.url);
-          return cachedResponse;
+          return cachedResponse; // Serve from cache
         }
-        // console.log('[Service Worker] Image not in cache, fetching from network:', event.request.url);
+        // Not in cache, fetch from network, then cache it for next time
+        const networkResponse = await fetch(event.request);
+        if (networkResponse && networkResponse.ok) {
+          await cache.put(event.request, networkResponse.clone());
+        }
+        return networkResponse;
+      })
+    );
+    return;
+  }
+
+  // --- STRATEGY 3: Network First, then Cache for App Shell Assets ---
+  // For core files like CSS and JS, try the network first to get the latest version.
+  // If the network fails, fall back to the cached version.
+  if (APP_SHELL_URLS.some(path => url.pathname.endsWith(path))) {
+    event.respondWith(
+      caches.open(APP_CACHE_NAME).then(async (cache) => {
         try {
           const networkResponse = await fetch(event.request);
-          if (networkResponse && networkResponse.ok) {
-             await cache.put(event.request, networkResponse.clone());
+          // If successful, update the cache with the new version
+          if (networkResponse.ok) {
+            await cache.put(event.request, networkResponse.clone());
           }
           return networkResponse;
         } catch (error) {
-          console.warn('[Service Worker] Storage fetch failed for image:', event.request.url, error);
-          return new Response('', { status: 404, statusText: 'Image Not Found (Offline)'}); // Simple 404 if image fails
+          // Network failed, serve the asset from the cache instead
+          console.warn(`[SW] Network failed for ${url.pathname}. Serving from cache.`);
+          return await cache.match(event.request);
         }
       })
     );
     return;
   }
 
-  // 3. For App Shell and other GET requests (HTML, CSS, JS, local assets):
-  //    Cache first, then network. Fallback to offline.html for navigation requests.
-  event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
+  // --- STRATEGY 4: App Shell for Navigation ---
+  // This is the most important part for SPAs.
+  // If the user is navigating to a new page (e.g., /messages), serve the main index.html.
+  // The client-side JavaScript will then read the URL and display the correct view.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      caches.match('/index.html').then((cachedResponse) => {
         if (cachedResponse) {
-          // console.log('[Service Worker] Serving app shell asset from cache:', event.request.url);
           return cachedResponse;
         }
-        // console.log('[Service Worker] App shell asset not in cache, fetching from network:', event.request.url);
-        return fetch(event.request)
-          .then((networkResponse) => {
-            if (networkResponse && networkResponse.ok && !event.request.url.startsWith('chrome-extension://')) {
-              const responseToCache = networkResponse.clone();
-              caches.open(APP_CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
-            }
-            return networkResponse;
-          })
-          .catch(() => { // Network failed for app shell asset
-            if (event.request.mode === 'navigate') { // Only for page navigations
-              console.warn('[Service Worker] App shell navigation failed, serving offline.html for:', event.request.url);
-              return caches.match('/offline.html');
-            }
-            // For other assets (like a font from CDN that wasn't in APP_SHELL_URLS_TO_CACHE), just let it fail.
-            return new Response('', { status: 404, statusText: 'Asset Not Found (Offline)' });
-          });
+        // As a last resort, if index.html isn't even cached, try to fetch it.
+        return fetch('/index.html').catch(() => caches.match('/offline.html'));
       })
-  );
+    );
+    return;
+  }
+
+  // For any other requests, just let the browser handle them.
 });
 
-// Message listener for SUPABASE_URL from client
+
+// --- OTHER EVENTS ---
+
+// Listen for messages from the client, specifically to get the Supabase URL.
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SET_SUPABASE_URL') {
     SUPABASE_URL_FROM_CLIENT = event.data.url;
-    console.log('[Service Worker] Received SUPABASE_URL:', SUPABASE_URL_FROM_CLIENT);
+    console.log('[SW] Received and set Supabase URL:', SUPABASE_URL_FROM_CLIENT);
   }
 });
 
-// Background Sync & Periodic Sync & Push are still complex to make fully operational
-// For now, their listeners will just log that they were triggered.
-self.addEventListener('sync', (event) => {
-  console.log('[Service Worker] Background sync event received, tag:', event.tag);
-  if (event.tag === 'send-pending-data') {
-    event.waitUntil(
-      Promise.resolve().then(() => console.log('[Service Worker] Placeholder: Would process send-pending-data sync.'))
-    );
-  }
-});
-
-self.addEventListener('periodicsync', (event) => {
-  console.log('[Service Worker] Periodic sync event received:', event.tag);
-  if (event.tag === 'update-app-content') {
-    event.waitUntil(
-      Promise.resolve().then(() => console.log('[Service Worker] Placeholder: Would process update-app-content periodic sync.'))
-    );
-  }
-});
-
+// Push notification received
 self.addEventListener('push', (event) => {
-  console.log('[Service Worker] Push Received.');
-  const data = event.data ? event.data.json() : { title: 'New Notification', body: 'Something happened!' };
+  console.log('[SW] Push Received.');
+  const data = event.data ? event.data.json() : {};
   const title = data.title || 'Cleveland Marketplace';
   const options = {
     body: data.body || 'You have a new update.',
     icon: data.icon || '/icons/icon-192x192.png',
-    badge: data.badge || '/icons/icon-192x192.png', // Using 192 for badge as well
-    data: {
-        url: data.url || '/'
-    }
+    badge: '/icons/icon-192x192.png',
+    data: { url: data.url || '/' }
   };
   event.waitUntil(self.registration.showNotification(title, options));
 });
 
+// Notification clicked
 self.addEventListener('notificationclick', (event) => {
-  console.log('[Service Worker] Notification click Received.', event.notification);
+  console.log('[SW] Notification clicked.');
   event.notification.close();
-  const urlToOpen = event.notification.data && event.notification.data.url ? event.notification.data.url : '/';
+  const urlToOpen = event.notification.data.url;
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      for (let i = 0; i < clientList.length; i++) {
-        const client = clientList[i];
-        if (client.url === urlToOpen && 'focus' in client) {
-            return client.focus();
+      // If a window for the app is already open, focus it.
+      for (const client of clientList) {
+        if (client.url === self.location.origin + urlToOpen && 'focus' in client) {
+          return client.focus();
         }
       }
+      // Otherwise, open a new window.
       if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }
     })
   );
+});
+
+// Placeholder for Background Sync
+self.addEventListener('sync', (event) => {
+  console.log('[SW] Background sync event received, tag:', event.tag);
 });
